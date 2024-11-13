@@ -7,102 +7,123 @@
 #include "primes.h"
 
 /*
-    Example implementation of UnorderedMap:
+Example implementation of UnorderedMap:
 
-    #include "UnorderedMap.h"
-    #include <iostream>
+#include "UnorderedMap.h"
+#include <iostream>
 
-    int main() {
-        UnorderedMap<int, std::string> map(5);
+int main() {
+    UnorderedMap<int, std::string> map(5);
 
-        // Insert elements
-        map.insert({1, "one"});
-        map.insert({2, "two"});
-        map.insert({3, "three"});
+    // Insert elements
+    map.insert({1, "one"});
+    map.insert({2, "two"});
+    map.insert({3, "three"});
 
-        // Access elements
-        std::cout << "Element with key 2: " << map[2] << std::endl;
+    // Access elements
+    std::cout << "Element with key 2: " << map[2] << std::endl;
 
-        // Erase element
-        map.erase(2);
+    // Erase element
+    map.erase(2);
 
-        // Check size
-        std::cout << "Size after erasing key 2: " << map.size() << std::endl;
+    // Check size
+    std::cout << "Size after erasing key 2: " << map.size() << std::endl;
 
-        // Print map
-        print_map(map);
+    // Print map
+    print_map(map);
 
-        return 0;
+    return 0;
+}
+
+Expected output:
+Element with key 2: two
+Size after erasing key 2: 2
+0:
+1: (1, one)
+2:
+3: (3, three)
+4:
+
+Big O Notation for operations:
+
+- Insert:
+  - Description: Adds a new element to the map.
+  - Average case: O(1)
+  - Worst case: O(n) (when all elements hash to the same bucket)
+
+- Erase:
+  - Description: Removes an element from the map by key.
+  - Average case: O(1)
+  - Worst case: O(n) (when all elements hash to the same bucket)
+
+- Find:
+  - Description: Searches for an element by key.
+  - Average case: O(1)
+  - Worst case: O(n) (when all elements hash to the same bucket)
+
+- Access (operator[]):
+  - Description: Accesses the element with the given key, inserting a default element if the key does not exist.
+  - Average case: O(1)
+  - Worst case: O(n) (when all elements hash to the same bucket)
+
+- Size:
+  - Description: Returns the number of elements in the map.
+  - Complexity: O(1)
+
+- Empty:
+  - Description: Checks if the map is empty.
+  - Complexity: O(1)
+
+- Clear:
+  - Description: Removes all elements from the map.
+  - Complexity: O(n)
+
+- Bucket count:
+  - Description: Returns the number of buckets in the map.
+  - Complexity: O(1)
+
+- Begin/End:
+  - Description: Returns an iterator to the beginning/end of the map.
+  - Complexity: O(1)
+
+- Load factor:
+  - Description: Returns the load factor of the map (number of elements divided by number of buckets).
+  - Complexity: O(1)
+
+- Bucket size:
+  - Description: Returns the number of elements in a specific bucket.
+  - Complexity: O(k) (where k is the number of elements in the bucket)
+
+- Bucket:
+  - Description: Returns the bucket index for a given key.
+  - Complexity: O(1)
+
+Example usage of iterators:
+
+#include "UnorderedMap.h"
+#include <iostream>
+
+int main() {
+    UnorderedMap<int, std::string> map(5);
+
+    // Insert elements
+    map.insert({1, "one"});
+    map.insert({2, "two"});
+    map.insert({3, "three"});
+
+    // Iterate over elements
+    for (auto it = map.begin(); it != map.end(); ++it) {
+        std::cout << "Key: " << it->first << ", Value: " << it->second << std::endl;
     }
 
-    Expected output:
-    Element with key 2: two
-    Size after erasing key 2: 2
-    0:
-    1: (1, one)
-    2:
-    3: (3, three)
-    4:
+    return 0;
+}
 
-    Big O Notation for operations:
-
-    - Insert:
-      - Average case: O(1)
-      - Worst case: O(n) (when all elements hash to the same bucket)
-
-    - Erase:
-      - Average case: O(1)
-      - Worst case: O(n) (when all elements hash to the same bucket)
-
-    - Find:
-      - Average case: O(1)
-      - Worst case: O(n) (when all elements hash to the same bucket)
-
-    - Access (operator[]):
-      - Average case: O(1)
-      - Worst case: O(n) (when all elements hash to the same bucket)
-
-    - Size: O(1)
-
-    - Empty: O(1)
-
-    - Clear: O(n)
-
-    - Bucket count: O(1)
-
-    - Begin/End: O(1)
-
-    - Load factor: O(1)
-
-    - Bucket size: O(k) (where k is the number of elements in the bucket)
-
-    - Bucket: O(1)
-
-    Example usage of iterators:
-
-    #include "UnorderedMap.h"
-    #include <iostream>
-
-    int main() {
-        UnorderedMap<int, std::string> map(5);
-
-        // Insert elements
-        map.insert({1, "one"});
-        map.insert({2, "two"});
-        map.insert({3, "three"});
-
-        // Iterate over elements
-        for (auto it = map.begin(); it != map.end(); ++it) {
-            std::cout << "Key: " << it->first << ", Value: " << it->second << std::endl;
-        }
-
-        return 0;
-    }
-
-    Expected output:
-    Key: 1, Value: one
-    Key: 3, Value: three
+Expected output:
+Key: 1, Value: one
+Key: 3, Value: three
 */
+
 
 template<typename Key, typename T, typename Hash = std::hash <Key>, typename Pred = std::equal_to <Key>>
 class UnorderedMap {
