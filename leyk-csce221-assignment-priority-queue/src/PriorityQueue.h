@@ -4,6 +4,45 @@
 #include <utility>
 #include <vector>
 
+/**
+ * PriorityQueue Class
+ *
+ * This class implements a priority queue using a binary heap. The priority queue supports the following operations:
+ *
+ * - `top()`: Returns a const reference to the element at the top of the heap. This operation runs in O(1) time.
+ * - `empty()`: Checks if the heap is empty. This operation runs in O(1) time.
+ * - `size()`: Returns the number of elements in the heap. This operation runs in O(1) time.
+ * - `push(const value_type& value)`: Inserts an element into the heap by copying it. This operation runs in O(log(size())) time.
+ * - `push(value_type&& value)`: Inserts an element into the heap by moving it. This operation runs in O(log(size())) time.
+ * - `pop()`: Removes the top element from the heap. This operation runs in O(log(size())) time.
+ *
+ * Implementation Details:
+ * - The priority queue is implemented using a binary heap stored in a `std::vector`.
+ * - The `upheap` function is used to maintain the heap property when an element is added.
+ * - The `downheap` function is used to maintain the heap property when the top element is removed.
+ * - The `parent`, `left_child`, and `right_child` helper functions are used to navigate the binary heap.
+ *
+ * Potential Points of Confusion:
+ * - The priority queue is implemented as a max heap by default, meaning the largest element is at the top.
+ * - The `Compare` template parameter is used to define the comparison function. By default, it is `std::less<T>`, which makes the heap a max heap.
+ * - The `upheap` and `downheap` functions are crucial for maintaining the heap property and ensuring the priority queue operates correctly.
+ * - The `push` function has two overloads: one for copying and one for moving elements into the heap.
+ * - The `pop` function removes the top element and then re-establishes the heap property by moving the last element to the top and calling `downheap`.
+ *
+ * Example Usage:
+ * \code{.cpp}
+ * PriorityQueue<int> pq;
+ * pq.push(10);
+ * pq.push(20);
+ * pq.push(5);
+ * std::cout << pq.top() << std::endl; // Outputs: 20
+ * pq.pop();
+ * std::cout << pq.top() << std::endl; // Outputs: 10
+ * pq.push(15);
+ * std::cout << pq.top() << std::endl; // Outputs: 15
+ * \endcode
+ */
+
 template <class T, class Container = std::vector<T>, class Compare = std::less<T>>
 class PriorityQueue {
 public:

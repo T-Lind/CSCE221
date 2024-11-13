@@ -6,8 +6,105 @@
 
 #include "primes.h"
 
+/*
+    Example implementation of UnorderedMap:
 
-template<typename Key, typename T, typename Hash = std::hash<Key>, typename Pred = std::equal_to<Key>>
+    #include "UnorderedMap.h"
+    #include <iostream>
+
+    int main() {
+        UnorderedMap<int, std::string> map(5);
+
+        // Insert elements
+        map.insert({1, "one"});
+        map.insert({2, "two"});
+        map.insert({3, "three"});
+
+        // Access elements
+        std::cout << "Element with key 2: " << map[2] << std::endl;
+
+        // Erase element
+        map.erase(2);
+
+        // Check size
+        std::cout << "Size after erasing key 2: " << map.size() << std::endl;
+
+        // Print map
+        print_map(map);
+
+        return 0;
+    }
+
+    Expected output:
+    Element with key 2: two
+    Size after erasing key 2: 2
+    0:
+    1: (1, one)
+    2:
+    3: (3, three)
+    4:
+
+    Big O Notation for operations:
+
+    - Insert:
+      - Average case: O(1)
+      - Worst case: O(n) (when all elements hash to the same bucket)
+
+    - Erase:
+      - Average case: O(1)
+      - Worst case: O(n) (when all elements hash to the same bucket)
+
+    - Find:
+      - Average case: O(1)
+      - Worst case: O(n) (when all elements hash to the same bucket)
+
+    - Access (operator[]):
+      - Average case: O(1)
+      - Worst case: O(n) (when all elements hash to the same bucket)
+
+    - Size: O(1)
+
+    - Empty: O(1)
+
+    - Clear: O(n)
+
+    - Bucket count: O(1)
+
+    - Begin/End: O(1)
+
+    - Load factor: O(1)
+
+    - Bucket size: O(k) (where k is the number of elements in the bucket)
+
+    - Bucket: O(1)
+
+    Example usage of iterators:
+
+    #include "UnorderedMap.h"
+    #include <iostream>
+
+    int main() {
+        UnorderedMap<int, std::string> map(5);
+
+        // Insert elements
+        map.insert({1, "one"});
+        map.insert({2, "two"});
+        map.insert({3, "three"});
+
+        // Iterate over elements
+        for (auto it = map.begin(); it != map.end(); ++it) {
+            std::cout << "Key: " << it->first << ", Value: " << it->second << std::endl;
+        }
+
+        return 0;
+    }
+
+    Expected output:
+    Key: 1, Value: one
+    Key: 3, Value: three
+*/
+
+template<typename Key, typename T, typename Hash = std::hash <Key>, typename Pred = std::equal_to <Key>>
 class UnorderedMap {
 public:
 
@@ -54,6 +151,7 @@ public:
 
     template<typename pointer_type, typename reference_type, typename _value_type>
     class basic_iterator {
+
     public:
         using iterator_category = std::forward_iterator_tag;
         using value_type = _value_type;
@@ -69,7 +167,9 @@ public:
         const UnorderedMap *_map;
         HashNode *_ptr;
 
-        explicit basic_iterator(UnorderedMap const *map, HashNode *ptr) noexcept {
+        explicit basic_iterator(UnorderedMap const *map, HashNode *ptr)
+
+        noexcept {
             _map = map;
             _ptr = ptr;
         }
@@ -119,11 +219,15 @@ public:
             return temp;
         }
 
-        bool operator==(const basic_iterator &other) const noexcept {
+        bool operator==(const basic_iterator &other) const
+
+        noexcept {
             return this->_ptr == other._ptr;
         }
 
-        bool operator!=(const basic_iterator &other) const noexcept {
+        bool operator!=(const basic_iterator &other) const
+
+        noexcept {
             return this->_ptr != other._ptr;
         }
     };
@@ -146,7 +250,9 @@ public:
 
         HashNode *_node;
 
-        explicit local_iterator(HashNode *node) noexcept {
+        explicit local_iterator(HashNode *node)
+
+        noexcept {
             _node = node;
         }
 
@@ -188,11 +294,15 @@ public:
             return temp;
         }
 
-        bool operator==(const local_iterator &other) const noexcept {
+        bool operator==(const local_iterator &other) const
+
+        noexcept {
             return this->_node == other._node;
         }
 
-        bool operator!=(const local_iterator &other) const noexcept {
+        bool operator!=(const local_iterator &other) const
+
+        noexcept {
             return this->_node != other._node;
         }
     };
@@ -329,7 +439,9 @@ public:
         return *this;
     }
 
-    void clear() noexcept {
+    void clear()
+
+    noexcept {
         if (_size > 0) {
             for (size_type index = 0; index < _bucket_count; index++) {
                 HashNode *curNode = _buckets[index];
@@ -345,15 +457,21 @@ public:
         }
     }
 
-    size_type size() const noexcept {
+    size_type size() const
+
+    noexcept {
         return _size;
     }
 
-    bool empty() const noexcept {
+    bool empty() const
+
+    noexcept {
         return _size == 0;
     }
 
-    size_type bucket_count() const noexcept {
+    size_type bucket_count() const
+
+    noexcept {
         return _bucket_count;
     }
 
@@ -393,10 +511,12 @@ public:
     }
 
     float load_factor() const {
-        return ((float) _size) / _bucket_count; }
+        return ((float) _size) / _bucket_count;
+    }
 
     size_type bucket(const Key &key) const {
-        return _bucket(key); }
+        return _bucket(key);
+    }
 
     std::pair<iterator, bool> insert(value_type &&value) {
         HashNode *duplicateCand = _find(value.first);
