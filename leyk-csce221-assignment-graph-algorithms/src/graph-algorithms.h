@@ -31,7 +31,7 @@
  * @return std::list<value_type<T>> list of nodes along shortest path including initial_node and destination_node, empty if no path exists
  */
 template<typename T>
-std::list<value_type<T>>
+std::list<value_type<T>> 
 dijkstrasAlgorithm(const WeightedGraph<T> &graph, vertex_type<T> initial_node, vertex_type<T> destination_node) {
     std::unordered_map<value_type<T>, weight_type<T>> distances;
     std::unordered_map<value_type<T>, std::optional<value_type<T>>> predecessors;
@@ -59,15 +59,25 @@ dijkstrasAlgorithm(const WeightedGraph<T> &graph, vertex_type<T> initial_node, v
             }
         }
     }
+
     std::list<value_type<T>> path;
-    for (auto at = destination_node; at.has_value(); at = predecessors[at.value()]) {
-        path.push_front(at.value());
+    if (initial_node == destination_node) {
+        path.push_back(initial_node);
+        return path;
     }
-    if (path.front() != initial_node) {
-        path.clear();
+    auto current = destination_node;
+    while (predecessors[current].has_value()) {
+        path.push_front(current);
+        current = predecessors[current].value();
+        if (current == initial_node) {
+            path.push_front(initial_node);
+            return path;
+        }
     }
+    path.clear();
     return path;
 }
+
 
 #include "top-sort-helpers.h"
 
@@ -81,9 +91,34 @@ dijkstrasAlgorithm(const WeightedGraph<T> &graph, vertex_type<T> initial_node, v
 template<typename T>
 std::list<value_type<T>> topologicalSort(const WeightedGraph<T> &graph) {
     std::unordered_map<value_type<T>, int> indegrees;
-    std::unordered_map<value_type<T>, int> topological_numbers;
+    computeIndegrees(graph, indegrees);
 
-    // TODO
+    std::queue<value_type<T>> q;
+    for (const auto& [vertex, indegree] : indegrees) {
+        if (indegree == 0) {
+            q.push(vertex);
+        }
+    }
+
+    std::list<value_type<T>> topological_order;
+    while (!q.empty()) {
+        value_type<T> u = q.front();
+        q.pop();
+        topological_order.push_back(u);
+
+        const auto& adj_list = graph.at(u);
+        for (const auto& [v, _] : adj_list) {
+            if (--indegrees[v] == 0) {
+                q.push(v);
+            }
+        }
+    }
+
+    if (topological_order.size() != graph.size()) {
+        topological_order.clear();
+    }
+
+    return topological_order;
 }
 
 template<typename T>
